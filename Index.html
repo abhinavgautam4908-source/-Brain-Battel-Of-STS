@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Battle Quiz of STS</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.quiz-box {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    color: #333;
+}
+
+.subject {
+    text-align: center;
+    font-weight: bold;
+    color: #764ba2;
+    margin-bottom: 15px;
+}
+
+.question {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: white;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f0f0ff;
+}
+
+.correct {
+    background: #b9f6ca !important;
+    border-color: green;
+}
+
+.wrong {
+    background: #ffbaba !important;
+    border-color: red;
+}
+
+button#next {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #667eea;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+#progress {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+#result {
+    text-align: center;
+}
+
+.score {
+    font-size: 28px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.restart {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 12px;
+    background: #764ba2;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+<h1>🧠 Brain Battle Quiz of STS</h1>
+
+<div id="quiz">
+
+<div id="progress"></div>
+
+<div class="subject" id="subject"></div>
+
+<div class="question" id="question"></div>
+
+<div id="options"></div>
+
+<button id="next" onclick="nextQuestion()">Next Question ➡️</button>
+
+</div>
+
+<div id="result" style="display:none;">
+<h2>🎉 Quiz Completed!</h2>
+<p class="score" id="score"></p>
+<p id="message"></p>
+<button class="restart" onclick="restartQuiz()">Play Again 🔄</button>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+/* BIOLOGY */
+
+{
+subject:"Biology",
+q:"What is the basic unit of life?",
+options:["Tissue","Cell","Organ","Organ system"],
+answer:"Cell"
+},
+
+{
+subject:"Biology",
+q:"Which organelle is known as the powerhouse of the cell?",
+options:["Nucleus","Ribosome","Mitochondria","Golgi body"],
+answer:"Mitochondria"
+},
+
+{
+subject:"Biology",
+q:"Which pigment gives plants their green colour?",
+options:["Haemoglobin","Chlorophyll","Carotene","Melanin"],
+answer:"Chlorophyll"
+},
+
+{
+subject:"Biology",
+q:"Which gas is released during photosynthesis?",
+options:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],
+answer:"Oxygen"
+},
+
+{
+subject:"Biology",
+q:"Which part of the plant absorbs water from the soil?",
+options:["Stem","Leaf","Root","Flower"],
+answer:"Root"
+},
+
+{
+subject:"Biology",
+q:"Which blood cells fight infections?",
+options:["RBCs","WBCs","Platelets","Plasma"],
+answer:"WBCs"
+},
+
+{
+subject:"Biology",
+q:"What is the largest organ of the human body?",
+options:["Heart","Liver","Skin","Brain"],
+answer:"Skin"
+},
+
+{
+subject:"Biology",
+q:"Which organ pumps blood throughout the body?",
+options:["Lungs","Heart","Kidney","Liver"],
+answer:"Heart"
+},
+
+{
+subject:"Biology",
+q:"Where does photosynthesis mainly occur?",
+options:["Roots","Leaves","Flowers","Fruits"],
+answer:"Leaves"
+},
+
+{
+subject:"Biology",
+q:"Which vitamin is produced in the skin in sunlight?",
+options:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],
+answer:"Vitamin D"
+},
+
+/* PHYSICS */
+
+{
+subject:"Physics",
+q:"What is the SI unit of force?",
+options:["Joule","Newton","Watt","Pascal"],
+answer:"Newton"
+},
+
+{
+subject:"Physics",
+q:"What is the SI unit of energy?",
+options:["Newton","Joule","Watt","Volt"],
+answer:"Joule"
+},
+
+{
+subject:"Physics",
+q:"What is the speed of light approximately?",
+options:["3 × 10⁸ m/s","3 × 10⁶ m/s","3 × 10⁵ m/s","3 × 10³ m/s"],
+answer:"3 × 10⁸ m/s"
+},
+
+{
+subject:"Physics",
+q:"Which instrument measures temperature?",
+options:["Barometer","Thermometer","Ammeter","Voltmeter"],
+answer:"Thermometer"
+},
+
+{
+subject:"Physics",
+q:"Which force pulls objects towards Earth?",
+options:["Friction","Magnetic force","Gravity","Electric force"],
+answer:"Gravity"
+},
+
+{
+subject:"Physics",
+q:"What is the SI unit of power?",
+options:["Watt","Joule","Newton","Pascal"],
+answer:"Watt"
+},
+
+{
+subject:"Physics",
+q:"Which device converts electrical energy into mechanical energy?",
+options:["Motor","Generator","Battery","Transformer"],
+answer:"Motor"
+},
+
+{
+subject:"Physics",
+q:"What is the SI unit of pressure?",
+options:["Newton","Pascal","Joule","Watt"],
+answer:"Pascal"
+},
+
+{
+subject:"Physics",
+q:"Which lens is used to correct myopia?",
+options:["Convex lens","Concave lens","Cylindrical lens","Plane lens"],
+answer:"Concave lens"
+},
+
+{
+subject:"Physics",
+q:"What is the SI unit of electric current?",
+options:["Volt","Ohm","Ampere","Watt"],
+answer:"Ampere"
+},
+
+/* CHEMISTRY */
+
+{
+subject:"Chemistry",
+q:"What is the chemical formula of water?",
+options:["CO₂","H₂O","O₂","NaCl"],
+answer:"H₂O"
+},
+
+{
+subject:"Chemistry",
+q:"What is the atomic number of hydrogen?",
+options:["1","2","8","10"],
+answer:"1"
+},
+
+{
+subject:"Chemistry",
+q:"Which gas is most abundant in Earth's atmosphere?",
+options:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],
+answer:"Nitrogen"
+},
+
+{
+subject:"Chemistry",
+q:"What is the pH of pure water at room temperature?",
+options:["5","6","7","8"],
+answer:"7"
+},
+
+{
+subject:"Chemistry",
+q:"What is the chemical symbol of sodium?",
+options:["S","So","Na","N"],
+answer:"Na"
+},
+
+{
+subject:"Chemistry",
+q:"Which element has the symbol O?",
+options:["Gold","Oxygen","Osmium","Iron"],
+answer:"Oxygen"
+},
+
+{
+subject:"Chemistry",
+q:"What is common salt chemically called?",
+options:["Sodium chloride","Calcium carbonate","Potassium chloride","Sodium hydroxide"],
+answer:"Sodium chloride"
+},
+
+{
+subject:"Chemistry",
+q:"Which acid is present in vinegar?",
+options:["Hydrochloric acid","Acetic acid","Sulphuric acid","Nitric acid"],
+answer:"Acetic acid"
+},
+
+{
+subject:"Chemistry",
+q:"Which metal is liquid at room temperature?",
+options:["Iron","Mercury","Copper","Aluminium"],
+answer:"Mercury"
+},
+
+{
+subject:"Chemistry",
+q:"What is the chemical symbol for gold?",
+options:["Gd","Go","Au","Ag"],
+answer:"Au"
+},
+
+/* MATHEMATICS */
+
+{
+subject:"Mathematics",
+q:"What is 12 × 8?",
+options:["86","96","106","108"],
+answer:"96"
+},
+
+{
+subject:"Mathematics",
+q:"What is the square of 15?",
+options:["125","200","225","250"],
+answer:"225"
+},
+
+{
+subject:"Mathematics",
+q:"What is the value of π approximately?",
+options:["2.14","3.14","4.14","1.14"],
+answer:"3.14"
+},
+
+{
+subject:"Mathematics",
+q:"How many sides does a hexagon have?",
+options:["5","6","7","8"],
+answer:"6"
+},
+
+{
+subject:"Mathematics",
+q:"What is 25% of 200?",
+options:["25","40","50","75"],
+answer:"50"
+},
+
+{
+subject:"Mathematics",
+q:"What is the smallest prime number?",
+options:["0","1","2","3"],
+answer:"2"
+},
+
+{
+subject:"Mathematics",
+q:"What is 9²?",
+options:["18","72","81","99"],
+answer:"81"
+},
+
+{
+subject:"Mathematics",
+q:"How many degrees are there in a right angle?",
+options:["45°","60°","90°","180°"],
+answer:"90°"
+},
+
+{
+subject:"Mathematics",
+q:"What is the perimeter of a square with side 5 cm?",
+options:["10 cm","15 cm","20 cm","25 cm"],
+answer:"20 cm"
+},
+
+{
+subject:"Mathematics",
+q:"What is 100 ÷ 4?",
+options:["20","25","30","40"],
+answer:"25"
+},
+
+/* ENGLISH */
+
+{
+subject:"English",
+q:"What is the opposite of 'ancient'?",
+options:["Old","Modern","Historic","Past"],
+answer:"Modern"
+},
+
+{
+subject:"English",
+q:"Which word is a noun?",
+options:["Run","Beautiful","Honesty","Quickly"],
+answer:"Honesty"
+},
+
+{
+subject:"English",
+q:"What is the plural of 'child'?",
+options:["Childs","Children","Childes","Childrens"],
+answer:"Children"
+},
+
+{
+subject:"English",
+q:"Which is a synonym of 'happy'?",
+options:["Sad","Joyful","Angry","Tired"],
+answer:"Joyful"
+},
+
+{
+subject:"English",
+q:"Which punctuation mark ends a question?",
+options:["Full stop","Comma","Question mark","Colon"],
+answer:"Question mark"
+},
+
+{
+subject:"English",
+q:"What is the past tense of 'go'?",
+options:["Goed","Gone","Went","Going"],
+answer:"Went"
+},
+
+{
+subject:"English",
+q:"Which word is an adjective?",
+options:["Beautiful","Run","Quickly","Happiness"],
+answer:"Beautiful"
+},
+
+{
+subject:"English",
+q:"Who wrote 'Macbeth'?",
+options:["Charles Dickens","William Shakespeare","Mark Twain","Roald Dahl"],
+answer:"William Shakespeare"
+},
+
+{
+subject:"English",
+q:"Which word means 'brave'?",
+options:["Cowardly","Courageous","Weak","Lazy"],
+answer:"Courageous"
+},
+
+{
+subject:"English",
+q:"What is the comparative form of 'good'?",
+options:["Gooder","Best","Better","More good"],
+answer:"Better"
+},
+
+/* GENERAL KNOWLEDGE */
+
+{
+subject:"General Knowledge",
+q:"What is the capital of India?",
+options:["Mumbai","New Delhi","Kolkata","Chennai"],
+answer:"New Delhi"
+},
+
+{
+subject:"General Knowledge",
+q:"Which is the largest ocean?",
+options:["Atlantic Ocean","Indian Ocean","Pacific Ocean","Arctic Ocean"],
+answer:"Pacific Ocean"
+},
+
+{
+subject:"General Knowledge",
+q:"How many continents are there?",
+options:["5","6","7","8"],
+answer:"7"
+},
+
+{
+subject:"General Knowledge",
+q:"Which is the largest planet in our solar system?",
+options:["Earth","Mars","Jupiter","Saturn"],
+answer:"Jupiter"
+},
+
+{
+subject:"General Knowledge",
+q:"Which planet is known as the Red Planet?",
+options:["Venus","Mars","Jupiter","Mercury"],
+answer:"Mars"
+},
+
+{
+subject:"General Knowledge",
+q:"How many days are there in a leap year?",
+options:["365","366","364","367"],
+answer:"366"
+},
+
+{
+subject:"General Knowledge",
+q:"Which is the national animal of India?",
+options:["Lion","Tiger","Elephant","Peacock"],
+answer:"Tiger"
+},
+
+{
+subject:"General Knowledge",
+q:"Which is the national bird of India?",
+options:["Eagle","Peacock","Sparrow","Parrot"],
+answer:"Peacock"
+},
+
+{
+subject:"General Knowledge",
+q:"How many players are there in a cricket team?",
+options:["9","10","11","12"],
+answer:"11"
+},
+
+{
+subject:"General Knowledge",
+q:"Which is the highest mountain in the world?",
+options:["K2","Mount Everest","Kangchenjunga","Nanda Devi"],
+answer:"Mount Everest"
+},
+
+/* HISTORY */
+
+{
+subject:"History",
+q:"Who was the first President of India?",
+options:["Jawaharlal Nehru","Dr. Rajendra Prasad","Sardar Patel","Dr. B. R. Ambedkar"],
+answer:"Dr. Rajendra Prasad"
+},
+
+{
+subject:"History",
+q:"Who is known as the Father of the Nation in India?",
+options:["Subhas Chandra Bose","Mahatma Gandhi","Bhagat Singh","Jawaharlal Nehru"],
+answer:"Mahatma Gandhi"
+},
+
+{
+subject:"History",
+q:"The Taj Mahal was built by which Mughal emperor?",
+options:["Akbar","Babur","Shah Jahan","Aurangzeb"],
+answer:"Shah Jahan"
+},
+
+{
+subject:"History",
+q:"Who founded the Maurya Empire?",
+options:["Ashoka","Chandragupta Maurya","Harsha","Samudragupta"],
+answer:"Chandragupta Maurya"
+},
+
+{
+subject:"History",
+q:"When did India become independent?",
+options:["1945","1947","1950","1952"],
+answer:"1947"
+},
+
+{
+subject:"History",
+q:"Who gave the slogan 'Jai Hind'?",
+options:["Subhas Chandra Bose","Mahatma Gandhi","Nehru","Tilak"],
+answer:"Subhas Chandra Bose"
+},
+
+{
+subject:"History",
+q:"Who was known as the Iron Man of India?",
+options:["Sardar Vallabhbhai Patel","Bhagat Singh","Rajendra Prasad","Lal Bahadur Shastri"],
+answer:"Sardar Vallabhbhai Patel"
+},
+
+{
+subject:"History",
+q:"Who was the first emperor of the Gupta dynasty?",
+options:["Sri Gupta","Ashoka","Chandragupta II","Harsha"],
+answer:"Sri Gupta"
+},
+
+{
+subject:"History",
+q:"Who wrote the Indian national anthem?",
+options:["Bankim Chandra Chatterjee","Rabindranath Tagore","Sarojini Naidu","Premchand"],
+answer:"Rabindranath Tagore"
+},
+
+{
+subject:"History",
+q:"The Dandi March was associated with which movement?",
+options:["Non-Cooperation Movement","Civil Disobedience Movement","Quit India Movement","Swadeshi Movement"],
+answer:"Civil Disobedience Movement"
+},
+
+/* GEOGRAPHY */
+
+{
+subject:"Geography",
+q:"Which is the longest river in India?",
+options:["Ganga","Yamuna","Godavari","Narmada"],
+answer:"Ganga"
+},
+
+{
+subject:"Geography",
+q:"Which desert is located in India?",
+options:["Sahara","Gobi","Thar","Kalahari"],
+answer:"Thar"
+},
+
+{
+subject:"Geography",
+q:"Which state is known as the Land of Rising Sun in India?",
+options:["Assam","Arunachal Pradesh","Sikkim","Manipur"],
+answer:"Arunachal Pradesh"
+},
+
+{
+subject:"Geography",
+q:"Which is the largest state in India by area?",
+options:["Madhya Pradesh","Rajasthan","Maharashtra","Uttar Pradesh"],
+answer:"Rajasthan"
+},
+
+{
+subject:"Geography",
+q:"Which is the smallest state in India by area?",
+options:["Goa","Sikkim","Tripura","Manipur"],
+answer:"Goa"
+},
+
+{
+subject:"Geography",
+q:"Which imaginary line divides Earth into Northern and Southern Hemispheres?",
+options:["Prime Meridian","Equator","Tropic of Cancer","Arctic Circle"],
+answer:"Equator"
+},
+
+{
+subject:"Geography",
+q:"Which ocean lies south of India?",
+options:["Pacific Ocean","Indian Ocean","Atlantic Ocean","Arctic Ocean"],
+answer:"Indian Ocean"
+},
+
+{
+subject:"Geography",
+q:"Which mountain range separates the Indian subcontinent from Central Asia?",
+options:["Alps","Himalayas","Andes","Rockies"],
+answer:"Himalayas"
+},
+
+{
+subject:"Geography",
+q:"Which is the largest continent?",
+options:["Africa","Asia","Europe","North America"],
+answer:"Asia"
+},
+
+{
+subject:"Geography",
+q:"Which river is called the Sorrow of Bihar?",
+options:["Ganga","Kosi","Yamuna","Godavari"],
+answer:"Kosi"
+},
+
+/* COMPUTER */
+
+{
+subject:"Computer",
+q:"What does CPU stand for?",
+options:["Central Processing Unit","Computer Personal Unit","Central Program Utility","Control Processing Unit"],
+answer:"Central Processing Unit"
+},
+
+{
+subject:"Computer",
+q:"Which device is used to type text?",
+options:["Monitor","Keyboard","Speaker","Printer"],
+answer:"Keyboard"
+},
+
+{
+subject:"Computer",
+q:"Which device displays information?",
+options:["Keyboard","Mouse","Monitor","Scanner"],
+answer:"Monitor"
+},
+
+{
+subject:"Computer",
+q:"What does RAM stand for?",
+options:["Random Access Memory","Read Access Memory","Rapid Action Memory","Run Access Module"],
+answer:"Random Access Memory"
+},
+
+{
+subject:"Computer",
+q:"Which language is used to structure web pages?",
+options:["HTML","Python","C++","Java"],
+answer:"HTML"
+},
+
+{
+subject:"Computer",
+q:"What does WWW stand for?",
+options:["World Wide Web","World Web Window","Wide World Web","Web World Wide"],
+answer:"World Wide Web"
+},
+
+{
+subject:"Computer",
+q:"Which one is an operating system?",
+options:["Google","Windows","Chrome","HTML"],
+answer:"Windows"
+},
+
+{
+subject:"Computer",
+q:"Which device is commonly used to move the pointer?",
+options:["Keyboard","Mouse","Printer","Monitor"],
+answer:"Mouse"
+},
+
+{
+subject:"Computer",
+q:"What does USB stand for?",
+options:["Universal Serial Bus","United System Bus","Universal System Board","User Serial Board"],
+answer:"Universal Serial Bus"
+},
+
+{
+subject:"Computer",
+q:"Which symbol is commonly used in an email address?",
+options:["#","@","&","%"],
+answer:"@"
+},
+
+/* CIVICS */
+
+{
+subject:"Civics",
+q:"What is the supreme law of India?",
+options:["Parliament","Constitution","Supreme Court","President"],
+answer:"Constitution"
+},
+
+{
+subject:"Civics",
+q:"Who is the constitutional head of India?",
+options:["Prime Minister","President","Chief Justice","Governor"],
+answer:"President"
+},
+
+{
+subject:"Civics",
+q:"How many houses does the Indian Parliament have?",
+options:["One","Two","Three","Four"],
+answer:"Two"
+},
+
+{
+subject:"Civics",
+q:"Which is the lower house of Parliament?",
+options:["Rajya Sabha","Lok Sabha","Vidhan Sabha","Legislative Council"],
+answer:"Lok Sabha"
+},
+
+{
+subject:"Civics",
+q:"Which is the upper house of Parliament?",
+options:["Lok Sabha","Rajya Sabha","Vidhan Sabha","Gram Sabha"],
+answer:"Rajya Sabha"
+},
+
+{
+subject:"Civics",
+q:"Who appoints the Prime Minister of India?",
+options:["Chief Justice","President","Speaker","Governor"],
+answer:"President"
+},
+
+{
+subject:"Civics",
+q:"What is the minimum voting age in India?",
+options:["16","18","21","25"],
+answer:"18"
+},
+
+{
+subject:"Civics",
+q:"Fundamental Rights are guaranteed by which document?",
+options:["Constitution","Budget","Election Commission","Parliament Rules"],
+answer:"Constitution"
+},
+
+{
+subject:"Civics",
+q:"Who is the head of the Union Government?",
+options:["President","Prime Minister","Governor","Chief Justice"],
+answer:"Prime Minister"
+},
+
+{
+subject:"Civics",
+q:"Which body conducts elections in India?",
+options:["Supreme Court","Election Commission of India","Parliament","Police"],
+answer:"Election Commission of India"
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("progress").innerText =
+        "Question " + (currentQuestion + 1) + " of " + questions.length;
+
+    document.getElementById("subject").innerText =
+        "📚 " + q.subject;
+
+    document.getElementById("question").innerText =
+        q.q;
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach(option => {
+
+        const button = document.createElement("button");
+
+        button.innerText = option;
+        button.className = "option";
+
+        button.onclick = function() {
+            checkAnswer(button, option);
+        };
+
+        optionsDiv.appendChild(button);
+
+    });
+}
+
+function checkAnswer(button, selected) {
+
+    if(answered) return;
+
+    answered = true;
+
+    const correct = questions[currentQuestion].answer;
+
+    const allOptions =
+        document.querySelectorAll(".option");
+
+    allOptions.forEach(btn => {
+
+        if(btn.innerText === correct) {
+            btn.classList.add("correct");
+        }
+
+    });
+
+    if(selected === correct) {
+
+        score++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+    }
+}
+
+function nextQuestion() {
+
+    if(!answered) {
+        alert("Please select an answer first!");
+        return;
+    }
+
+    currentQuestion++;
+
+    if(currentQuestion < questions.length) {
+
+        loadQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+}
+
+function showResult() {
+
+    document.getElementById("quiz").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("score").innerText =
+        "Your Score: " + score + " / " + questions.length;
+
+    let message = "";
+
+    if(score >= 90) {
+        message = "🏆 Outstanding! You are a Quiz Champion!";
+    }
+    else if(score >= 75) {
+        message = "🌟 Excellent performance!";
+    }
+    else if(score >= 50) {
+        message = "👏 Good job! Keep practising!";
+    }
+    else {
+        message = "💪 Keep learning and try again!";
+    }
+
+    document.getElementById("message").innerText = message;
+}
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+    score = 0;
+
+    document.getElementById("result").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+
+    loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
